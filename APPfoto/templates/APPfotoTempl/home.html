@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %} Home di Foto Gallery {% endblock %}
+
+{% block header1 %}
+  <h1>Home di Foto Gallery</h1>
+  <p>Welcome
+    {% if user.is_authenticated %}
+     {{ user.username }}
+    {% else %}
+    Utente non registrato
+    {% endif %}
+  </p>
+{% endblock %}
+
+{% block content %}
+
+<h2>Cosa si fa di bello?</h2>
+
+<br>
+
+<div class="list-group">
+  <a href="{% url 'APPfoto:cercaFoto' %}" class="list-group-item list-group-item-info">Cerca una foto</a>
+  <a href="{% url 'APPfoto:listafoto' %}" class="list-group-item list-group-item-info">Elenco delle Foto</a>
+  <a href="{% url 'APPfoto:situation' %}" class="list-group-item list-group-item-info">Cronologia Acquisti e Recensioni</a>
+</div>
+
+<br>
+
+{% if user.is_staff %}
+<br>
+<a href="{% url 'registrafotografo' %}" class="list-group-item list-group-item-danger">Iscrivi un fotografo alla gilda</a>
+<br>
+{% endif %}
+
+
+{% if "Fotografi" in user.groups.all.0.name or user.is_staff %}
+<br>
+<a href="{% url 'APPfoto:creafoto' %}" class="list-group-item list-group-item-warning">Aggiungi una foto</a>
+<br>
+{% endif %}
+
+
+{% endblock %}

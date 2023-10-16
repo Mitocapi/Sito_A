@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %} Home di {{ user.username }} {% endblock %}
+
+{% block header1 %}
+  <h1>Cronologia di {{ user.username }} </h1>
+  <p>Benvenuto
+    {% if user.is_authenticated %}
+     {{ user.username }}
+    {% else %}
+    Utente non registrato
+        <br>
+        effettua il login per continuare
+    {% endif %}
+  </p>
+{% endblock %}
+
+{% block content %}
+     <br> <a href="{% url 'APPfoto:RecensioniUtente' %}" class="btn btn-info">Visualizza Recensioni</a>
+    <br>
+    <br>
+  <h2> Ecco l'elenco dei tuoi acquisti </h2>
+
+  <br>
+
+
+  {% for acquisto in user.acquisti.all reversed %}
+    <div class="card">
+      <div class="card-header">
+                <img src="{{ acquisto.foto.actual_photo.url }}" alt="{{ f.name }}" style="max-width: 400px; max-height: 400px;">
+      </div>
+      <div class="card-body">
+        <h5 class="card-title">{{ acquisto.foto.name }}</h5>
+        <p class="card-text">Una foto di {{ acquisto.foto.artist.username }} </p>
+        <p class="card-text">Materiale: {{ acquisto.get_materiale_display }}</p>
+        <p class="card-text">Dimensioni: {{ acquisto.get_dimensioni_display }}</p>
+        <p class="card-text">Spesa totale: {{ acquisto.prezzo }}</p>
+
+        <a href="{% url 'APPfoto:CreaRecensione' acquisto.pk %}" class="btn btn-info"> Scrivi una Recensione </a>
+
+
+      </div>
+    </div>
+    <br>
+  {% endfor %}
+
+  <br>
+
+{% endblock %}

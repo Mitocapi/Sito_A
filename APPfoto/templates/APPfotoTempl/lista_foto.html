@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %} Elenco Foto{% endblock %}
+
+{% load static %}
+
+{% block header1 %}
+  <h1>Elenco Foto</h1>
+{% endblock %}
+
+{% block content %}
+<h2> Vetrina con {{ object_list.count }} Foto </h2>
+<br>
+
+<div class="btn-group" role="group">
+    <a href="?sort=price" class="btn btn-secondary">Prezzo crescente</a>
+    <a href="?sort=new" class="btn btn-secondary">I più nuovi</a>
+    <a href="?sort=best seller" class="btn btn-secondary">Best Seller</a>
+</div>
+
+<br>
+{% if object_list %}
+    {% for f in object_list %}
+    <br>
+    <div class="card">
+        <div class="card-header">
+        <img src="{{ f.actual_photo.url }}" alt="{{ f.name }}" style="max-width: 400px; max-height: 400px;">
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ f.name }}</h5>
+            {% if f.landscape %}
+    <p class="card-text">foto scattata da {{ f.artist.username }} in formato Landscape</p>
+    <p class="card-text">Copie vendute: {{ f.acquisto_count }} !</p>
+    <br>
+    <br> comprala per soli {{ f.price }}
+{% else %}
+    <p class="card-text">foto scattata da {{ f.artist.username }} in formato Portrait</p>
+    <p class="card-text">Copie vendute: {{ f.acquisto_count }}!</p>
+    <br>
+    <br> a partire da: {{ f.price }}
+{% endif %}
+
+
+        </div>
+        <div class="card-footer">
+            <a href="{% url 'APPfoto:acquisto' f.pk %}" class="btn btn-info">
+                Procedi alla composizione della foto </a>
+        </div>
+    </div>
+    <br>
+    {% endfor %}
+
+
+{% else %}
+    <p>No photos available.</p>
+    <!-- Redirect dopo 3 secondi -->
+    <meta http-equiv="refresh" content="3;url={% url 'APPfoto:cercaFoto' %}">
+{% endif %}
+<br>
+
+{% endblock %}
